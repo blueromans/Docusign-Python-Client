@@ -7,8 +7,8 @@ from docusign.service.token_service import DocusignTokenService
 class DsTemplateService(DocusignTokenService):
     params = dict()
 
-    def __init__(self, environment="dev", encoded_keys=None, code_from_url=None, **kwargs):
-        super().__init__(environment, encoded_keys, code_from_url)
+    def __init__(self, environment="dev", encoded_keys=None, code_from_url=None, path=None, **kwargs):
+        super().__init__(environment, encoded_keys, code_from_url, path)
         self.envelope_args = {
             "signer_email": kwargs['signer_email'],
             "signer_name": kwargs['signer_name'],
