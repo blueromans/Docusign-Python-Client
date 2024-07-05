@@ -1,6 +1,7 @@
 import requests
 
 from docusign.exception import DocusignException
+from docusign.logger import logger
 from docusign.serializer import Serializer
 
 
@@ -14,11 +15,14 @@ class HttpService:
     def parse_result(r):
         res = r.text.encode('utf-8')
         res = Serializer.loads(res)
+        logger.info(r.status_code)
+        logger.info(res)
         if r.status_code != 200 and r.status_code != 202:
             if 'error_description' in res:
                 raise DocusignException(res['error_description'])
             if 'error' in res:
                 raise DocusignException(res['error'])
+            raise DocusignException(res)
         return res
 
     def post_request(self, url, request_body, headers):
