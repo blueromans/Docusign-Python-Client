@@ -1,6 +1,7 @@
-import requests
 import base64 as base64lib
-from docusign.exception import DocusignException
+
+import requests
+
 from docusign.serializer import Serializer
 
 
@@ -17,9 +18,9 @@ class HttpService:
             res = Serializer.loads(res)
             if r.status_code != 200 and r.status_code != 202:
                 if 'error_description' in res:
-                    raise DocusignException(res['error_description'])
+                    raise ValueError(res['error_description'])
                 if 'error' in res:
-                    raise DocusignException(res['error'])
+                    raise ValueError(res['error'])
             return res
         if base64 is True:
             return base64lib.b64encode(r.content).decode("utf-8")
