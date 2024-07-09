@@ -1,14 +1,15 @@
-from docusign_esign import EnvelopeDefinition, EnvelopesApi
+from docusign_esign import EnvelopeDefinition, TemplateRole, EnvelopesApi
 
 from docusign.helper.ds_client import create_api_client
 from docusign.service.token_service import DocusignTokenService
+import requests
 
 
 class DsTemplateService(DocusignTokenService):
     params = dict()
 
-    def __init__(self, environment="dev", encoded_keys=None, code_from_url=None, path=None, **kwargs):
-        super().__init__(environment, encoded_keys, code_from_url, path)
+    def __init__(self, environment="dev", encoded_keys=None, code_from_url=None, **kwargs):
+        super().__init__(environment, encoded_keys, code_from_url)
         self.envelope_args = {
             "signer_email": kwargs['signer_email'],
             "signer_name": kwargs['signer_name'],
@@ -21,7 +22,7 @@ class DsTemplateService(DocusignTokenService):
             "envelope_args": self.envelope_args
         }
 
-    def send_envelope(self, roles = []):
+    def send_envelope(self, roles=[]):
         """
         1. Create the envelope request object
         2. Send the envelope
@@ -60,3 +61,24 @@ class DsTemplateService(DocusignTokenService):
         # Add the TemplateRole objects to the envelope object
         envelope_definition.template_roles = roles
         return envelope_definition
+
+    def get_documents(self, envelope_id):
+        headers = {
+            'content-type': 'application/json',
+            'accept': '*/*',
+            'Authorization': f'Bearer {self.token_dict["access_token"]}'
+        }
+        url = f'{self.args["base_path"]}/v2.1/accounts/{self.args["account_id"]}/envelopes/{envelope_id}/documents'
+        res = self.connect('GET', url, headers=headers)
+        return res
+
+    def get_document(self, uri):
+        headers = {
+            'content-type': 'application/json',
+            'accept': '*/*',
+            'Authorization': f'Bearer {self.token_dict["access_token"]}'
+        }
+        url = f'{self.args["base_path"]}/v2.1/accounts/{self.args["account_id"]}{uri}'
+        res = self.connect('GET', url, headers=headers, json=False, base64=True)
+        return res
+
