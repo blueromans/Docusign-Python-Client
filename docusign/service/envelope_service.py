@@ -4,8 +4,8 @@ from docusign.service.token_service import DocusignTokenService
 class DsEnvelopeService(DocusignTokenService):
     params = dict()
 
-    def __init__(self, environment="dev", encoded_keys=None, **kwargs):
-        super().__init__(environment, encoded_keys)
+    def __init__(self, environment="dev", encoded_keys=None, path=None, **kwargs):
+        super().__init__(environment, encoded_keys, path)
         self.args = {
             "account_id": kwargs["account_id"],
             "base_path": kwargs["base_path"],
