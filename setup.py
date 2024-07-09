@@ -6,7 +6,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setuptools.setup(
     name='DocusignRestClient',
-    version="0.0.7",
+    version="0.0.8",
     author="Yaşar Özyurt",
     author_email="blueromans@gmail.com",
     description='Docusign Api Client Python package',
