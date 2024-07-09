@@ -1,5 +1,4 @@
 class ErrorCodes:
-    CODE_FROM_URL_ERROR = 'Code from url error!'
     INVALID_ATTRIBUTE = 'Invalid attribute!'
     ENVIRONMENT_ERROR = 'Invalid environment!'
     TOKEN_ERROR = 'Invalid token!'

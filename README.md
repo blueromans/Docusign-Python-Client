@@ -15,7 +15,6 @@ pip install DocusignRestClient
 ```bash
 DOCUSIGN_ENV: 'dev|prod'
 DOCUSIGN_ENCODED_KEYS: 'Encoded keys'
-DOCUSIGN_CODE_FROM_URL: 'Code from callback url'
 ```
 
 ### Note

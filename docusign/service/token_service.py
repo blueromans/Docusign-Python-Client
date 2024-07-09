@@ -13,10 +13,9 @@ class DocusignTokenService(HttpService):
         'accept': '*/*'
     }
 
-    def __init__(self, environment="dev", encoded_keys=None, code_from_url=None, path=None):
+    def __init__(self, environment="dev", encoded_keys=None, path=None):
         self.environment = os.environ.get('DOCUSIGN_ENV', environment)
         self.encoded_keys = os.environ.get('DOCUSIGN_ENCODED_KEYS', encoded_keys)
-        self.code_from_url = os.environ.get('DOCUSIGN_CODE_FROM_URL', code_from_url)
         if self.environment is None:
             raise ValueError(ErrorCodes.ENVIRONMENT_ERROR)
         api_url = self.API_DEV_URL if self.environment == 'dev' else self.API_PROD_URL
@@ -25,12 +24,6 @@ class DocusignTokenService(HttpService):
         self.headers['Authorization'] = f'Basic {self.encoded_keys}'
         if self.encoded_keys is None:
             raise ValueError(ErrorCodes.ENCODED_KEYS_ERROR)
-        if self.token_dict is None:
-            if self.code_from_url is None:
-                raise ValueError(ErrorCodes.CODE_FROM_URL_ERROR)
-            payloads = dict(code=self.code_from_url, grant_type='authorization_code')
-            self.token_dict = self.retrieve_access_token(payloads, path)
-            return
         payloads = dict(refresh_token=self.token_dict['refresh_token'], grant_type='refresh_token')
         self.token_dict = self.retrieve_access_token(payloads, path)
 
